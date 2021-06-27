@@ -41,16 +41,16 @@ export default function Create() {
                 <button className={"radio-btn " + (isFile ? "inactive" : "")} onClick={() => setIsFile(false)}>Folder</button>
             </div>
             <div className="fields">
-                <input type="text" className={isValidName ? "" : "invalid"} placeholder="Name" onChange={e => setName(e.target.value)} value={name}></input>
+                <input type="text" className={name === "" || isValidName ? "" : "invalid"} placeholder="Name" onChange={e => setName(e.target.value)} value={name}></input>
             </div>
             <div className="fields">
-                <input type="text" className={isValidCreator ? "" : "invalid"} placeholder="Creator" onChange={e => setCreator(e.target.value)} value={creator}></input>
+                <input type="text" className={creator === "" || isValidCreator ? "" : "invalid"} placeholder="Creator" onChange={e => setCreator(e.target.value)} value={creator}></input>
             </div>
             <div className="fields">
-                <input type="text" className={isValidSize ? "" : "invalid"} placeholder="Size" onChange={e => setSize(e.target.value)} value={size}></input>
+                <input type="text" className={size === "" || isValidSize ? "" : "invalid"} placeholder="Size" onChange={e => setSize(e.target.value)} value={size}></input>
             </div>
             <div className="fields">
-                <input type="text" className={isValidDate ? "" : "invalid"} placeholder="Date" onChange={e => setDate(e.target.value)} value={date}></input>
+                <input type="text" className={date === "" || isValidDate ? "" : "invalid"} placeholder="Date" onChange={e => setDate(e.target.value)} value={date}></input>
             </div>
             <div className="action">
                 <button onClick={createHandler} disabled={!isValidName || !isValidCreator || !isValidSize || !isValidDate}>Create</button>
