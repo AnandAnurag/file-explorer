@@ -1,77 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import defaultJSON from './default.json';
 
-export function getDirectory(root, path) {
-  const levels = path.split('/').filter(_ => _);
-  let dir = root;
-  for (let level of levels)
-    dir = dir['folders'][level];
-  return dir;
+let initialState;
+if (!localStorage.getItem('/')) {
+  localStorage.setItem('/', JSON.stringify(defaultJSON));
 }
-const initialState = {
-  name: 'root',
-  size: null,
-  creator: null,
-  date: null,
-  files: {
-    "index.html": {
-      name: 'index.html',
-      size: '542kb',
-      creator: 'Ankur',
-      date: new Date().toLocaleDateString()
-    },
-    "index.js": {
-      name: 'index.js',
-      size: '1024kb',
-      creator: 'Anurag',
-      date: new Date().toLocaleDateString()
-    }
-  },
-  folders: {
-    "docs": {
-      name: 'docs',
-      size: '542kb',
-      creator: 'Ankur',
-      date: new Date().toLocaleDateString(),
-      files: {
-        "c.pdf": {
-          name: "c.pdf",
-          size: '542kb',
-          creator: 'Ankur',
-          date: new Date().toLocaleDateString()
-        },
-        "d.docx": {
-          name: "d.docx",
-          size: '1024kb',
-          creator: 'Anurag',
-          date: new Date().toLocaleDateString()
-        }
-      },
-      folders: {
-        "work": {
-          name: 'work',
-          size: '542kb',
-          creator: 'Ankur',
-          date: new Date().toLocaleDateString(),
-          files: {
-            "e.pdf": {
-              name: "d.docx",
-              size: '1024kb',
-              creator: 'Anurag',
-              date: new Date().toLocaleDateString()
-            },
-            "f.ts": {
-              name: "d.docx",
-              size: '1024kb',
-              creator: 'Anurag',
-              date: new Date().toLocaleDateString()
-            }
-          },
-          folders: {}
-        }
-      }
-    }
-  }
-};
+initialState = JSON.parse(localStorage.getItem('/'));
 
 
 const rootSlice = createSlice({
@@ -84,6 +18,7 @@ const rootSlice = createSlice({
       const dir = getDirectory(state, location);
       if (type === 'file')
         dir['files'][name] = {
+          type,
           location,
           name,
           size,
@@ -92,6 +27,7 @@ const rootSlice = createSlice({
         }
       else
         dir['folders'][name] = {
+          type,
           location,
           name,
           size,
@@ -115,3 +51,10 @@ const rootSlice = createSlice({
 const { reducer } = rootSlice;
 export default reducer;
 export const { add, remove } = rootSlice.actions;
+export function getDirectory(root, path) {
+  const levels = path.split('/').filter(_ => _);
+  let dir = root;
+  for (let level of levels)
+    dir = dir['folders'][level];
+  return dir;
+}

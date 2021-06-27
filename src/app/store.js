@@ -8,3 +8,11 @@ export const store = configureStore({
     navigate: navigateReducer
   },
 });
+
+store.subscribe(() => {
+  const { location } = store.getState().navigate;
+  if (location !== window.location.pathname) {
+    window.history.replaceState({}, '', location);
+  }
+  localStorage.setItem('/', JSON.stringify(store.getState().root));
+})

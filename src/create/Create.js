@@ -26,24 +26,24 @@ export default function Create() {
     };
 
     return (
-        <div class="create">
-            <div class="fields">
+        <div className="create">
+            <div className="fields">
                 <button className={"radio-btn " + (isFile ? "" : "inactive")} onClick={() => setIsFile(true)}>File</button>
                 <button className={"radio-btn " + (isFile ? "inactive" : "")} onClick={() => setIsFile(false)}>Folder</button>
             </div>
-            <div class="fields">
+            <div className="fields">
                 <input type="text" placeholder="Name" onChange={e => setName(e.target.value)} value={name}></input>
             </div>
-            <div class="fields">
+            <div className="fields">
                 <input type="text" placeholder="Creator" onChange={e => setCreator(e.target.value)} value={creator}></input>
             </div>
-            <div class="fields">
+            <div className="fields">
                 <input type="text" placeholder="Size" onChange={e => setSize(e.target.value)} value={size}></input>
             </div>
-            <div class="fields">
+            <div className="fields">
                 <input type="text" placeholder="Date" onChange={e => setDate(e.target.value)} value={date}></input>
             </div>
-            <div class="action">
+            <div className="action">
                 <button onClick={createHandler}>Create</button>
             </div>
         </div>

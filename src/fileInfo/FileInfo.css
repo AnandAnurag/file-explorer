@@ -1,0 +1,21 @@
+.info-wrapper {
+    display: grid;
+    grid-template-columns: minmax(110px, 1fr) minmax(110px, 1fr);
+    align-items: center;
+    grid-gap: 1em;
+    font-size: 16px;
+}
+
+.info-wrapper>*:nth-child(even) {
+    justify-self: right;
+}
+
+.info-wrapper>*:nth-child(odd) {
+    justify-self: left;
+    color: #81878C;
+}
+
+.info-wrapper>.icon {
+    justify-self: center;
+    grid-column: 1/3;
+}

@@ -1,0 +1,38 @@
+.breadcrumb {
+    display: flex;
+    padding-left: 1em;
+    font-size: 24px;
+    align-items: center;
+    justify-items: center;
+    gap: 0.5em;
+    height: 100%;
+}
+
+.breadcrumb>.image-wrapper {
+    height: 28.3px;
+    width: 28.3px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    cursor: pointer;
+    align-content: space-around;
+    justify-content: space-around;
+}
+
+.breadcrumb>.image-wrapper>img {
+    object-fit: contain;
+}
+
+.breadcrumb>.crumb-level-seperator {
+    flex-basis: 0.5em;
+    color: #81878C;
+}
+
+.breadcrumb>.crumb-level {
+    font-size: 24px;
+    letter-spacing: 0;
+}
+
+.breadcrumb>.crumb-level:not(:last-child) {
+    color: #81878C;
+}

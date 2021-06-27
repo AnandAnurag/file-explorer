@@ -4,15 +4,17 @@ import addImage from './add.png'
 import folderImage from './folder.png'
 import fileImage from './file.png'
 import { useCallback, useEffect, useState } from 'react';
-import { add, remove, getDirectory } from '../features/root/rootSlice';
+import { remove, getDirectory } from '../features/root/rootSlice';
 import { goto } from '../features/navigate/navigateSlice';
 import { Modal } from '../modal/Modal';
 import { render } from 'react-dom';
 import Create from '../create/Create';
 import { store } from '../app/store';
+import FileInfo from '../fileInfo/FileInfo';
 
 
-export function List({ location = '/' }) {
+export function List() {
+    const location = useSelector(state => state.navigate.location);
     const { files, folders } = useSelector(state => getDirectory(state.root, location));
     const dispatch = useDispatch();
     const [pos, setPos] = useState({ left: 0, top: 0 });
@@ -25,25 +27,23 @@ export function List({ location = '/' }) {
         setShowMenu(true);
         setPayload(Object.assign({ ...payload }, metaData));
     };
-    const actionHandler = (type) => {
-        switch (type) {
-            case 'add':
-                dispatch(add({
-                    type: 'file',
-                    location: '/',
-                    name: 'xyz.html',
-                    size: '542kb',
-                    creator: 'Ankur',
-                    date: new Date().toLocaleDateString()
-                }));
+    const actionHandler = (actionType) => {
+        const { name, type } = payload;
+        switch (actionType) {
+            case 'info':
+                detailHandler(payload);
                 break;
             case 'remove':
                 dispatch(remove(payload));
                 break;
             case 'navigate':
-                dispatch(goto({
-                    name: 'docs'
-                }));
+                if (type === 'folder')
+                    dispatch(goto({
+                        location: `${location}/${name}`
+                    }));
+                else {
+                    detailHandler(payload);
+                }
                 break;
             default:
                 break;
@@ -64,14 +64,14 @@ export function List({ location = '/' }) {
             {
                 Object.values(folders).map((folder, i) => (
                     <div key={`folder-${i}`} className="list-item">
-                        <Folder name={folder.name} contextMenuHandler={handleContextMenu}></Folder>
+                        <Folder contextMenuHandler={handleContextMenu} info={folder}></Folder>
                     </div>
                 ))
             }
             {
                 Object.values(files).map((file, i) => (
                     <div key={`file-${i}`} className="list-item">
-                        <File name={file.name} contextMenuHandler={handleContextMenu}></File>
+                        <File contextMenuHandler={handleContextMenu} info={file}></File>
                     </div>
                 ))
             }
@@ -92,18 +92,26 @@ function addHandler() {
         </Modal>
     </Provider>, document.getElementById('modal-root'));
 }
-function File({ name, contextMenuHandler }) {
+export function detailHandler(metaData) {
+    render(
+        <Modal title="File Info">
+            <FileInfo metaData={metaData} />
+        </Modal>
+        , document.getElementById('modal-root'));
+}
+function File({ info, contextMenuHandler }) {
     return (
-        <ListItemTemplate type="file" name={name} logo={fileImage} contextMenuHandler={contextMenuHandler} />
+        <ListItemTemplate type="file" info={info} logo={fileImage} contextMenuHandler={contextMenuHandler} />
     );
 }
-function Folder({ name, contextMenuHandler }) {
-    return <ListItemTemplate type="folder" name={name} logo={folderImage} contextMenuHandler={contextMenuHandler} />;
+function Folder({ info, contextMenuHandler }) {
+    return <ListItemTemplate type="folder" info={info} logo={folderImage} contextMenuHandler={contextMenuHandler} />;
 }
 
-function ListItemTemplate({ type, logo, name, contextMenuHandler }) {
+function ListItemTemplate({ type, logo, info, contextMenuHandler }) {
+    const { name } = info;
     return (
-        <div className={`item-template ${type}`} onContextMenu={e => contextMenuHandler.call(null, e, { name, type })}>
+        <div className={`item-template ${type}`} onContextMenu={e => contextMenuHandler.call(null, e, { type, ...info })}>
             <div className="icon">
                 <img src={logo} alt={name}></img>
             </div>
@@ -119,7 +127,7 @@ function ContextMenu({ top, left, actionHandler }) {
         <div className="context-menu" style={{ left, top }}>
             <ul>
                 <li onClick={e => { actionHandler('navigate') }}>Open</li>
-                <li onClick={e => { actionHandler('add') }}>Get Info</li>
+                <li onClick={e => { actionHandler('info') }}>Get Info</li>
                 <li onClick={e => { actionHandler('remove') }}><span style={{ color: 'red' }}>Delete</span></li>
             </ul>
         </div>

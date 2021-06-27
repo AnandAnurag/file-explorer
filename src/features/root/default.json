@@ -1,0 +1,113 @@
+{
+    "location": "/",
+    "type": "folder",
+    "name": "root",
+    "creator": "Anurag Anand",
+    "size": "1MB",
+    "date": "6/28/2021",
+    "files": {
+        "a.pdf": {
+            "type": "file",
+            "location": "/",
+            "name": "a.pdf",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021"
+        },
+        "b.jpg": {
+            "type": "file",
+            "location": "/",
+            "name": "b.jpg",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021"
+        }
+    },
+    "folders": {
+        "apps": {
+            "type": "folder",
+            "location": "/",
+            "name": "apps",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021",
+            "files": {},
+            "folders": {}
+        },
+        "pictures": {
+            "type": "folder",
+            "location": "/",
+            "name": "pictures",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021",
+            "files": {},
+            "folders": {}
+        },
+        "videos": {
+            "type": "folder",
+            "location": "/",
+            "name": "videos",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021",
+            "files": {},
+            "folders": {}
+        },
+        "docs": {
+            "type": "folder",
+            "location": "/",
+            "name": "docs",
+            "size": "131kb",
+            "creator": "Anurag Anand",
+            "date": "27 June, 2021",
+            "files": {
+                "c.pdf": {
+                    "type": "file",
+                    "location": "/docs",
+                    "name": "c.pdf",
+                    "size": "131kb",
+                    "creator": "Anurag Anand",
+                    "date": "27 June, 2021"
+                },
+                "d.docx": {
+                    "type": "file",
+                    "location": "/docs",
+                    "name": "d.docx",
+                    "size": "131kb",
+                    "creator": "Anurag Anand",
+                    "date": "27 June, 2021"
+                }
+            },
+            "folders": {
+                "work": {
+                    "type": "folder",
+                    "location": "/docs",
+                    "name": "work",
+                    "size": "131kb",
+                    "creator": "Anurag Anand",
+                    "date": "27 June, 2021",
+                    "files": {
+                        "e.pdf": {
+                            "type": "file",
+                            "location": "/docs/work",
+                            "name": "e.pdf",
+                            "size": "131kb",
+                            "creator": "Anurag Anand",
+                            "date": "27 June, 2021"
+                        },
+                        "f.ts": {
+                            "type": "file",
+                            "location": "/docs/work",
+                            "name": "f.ts",
+                            "size": "131kb",
+                            "creator": "Anurag Anand",
+                            "date": "27 June, 2021"
+                        }
+                    },
+                    "folders": {}
+                }
+            }
+        }
+    }
+}
