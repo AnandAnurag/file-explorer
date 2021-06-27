@@ -3,19 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../features/root/rootSlice';
 import { getLocation } from '../features/navigate/navigateSlice';
 import { ModalContext } from '../modal/Modal';
+import { getDirectory } from '../features/root/rootSlice';
 import './Create.css';
 export default function Create() {
     const { closeBtnRef } = useContext(ModalContext);
     const location = useSelector(getLocation);
+    const { files, folders } = useSelector(state => getDirectory(state.root, location));
     const [isFile, setIsFile] = useState(true);
-    const [name, setName] = useState("babel.js");
-    const [creator, setCreator] = useState("Anurag Anand");
-    const [size, setSize] = useState("131kb");
-    const [date, setDate] = useState("27 June, 2021");
+    const [name, setName] = useState("");
+    const isValidName = (!isFile && /^\w+$/.test(name)) || /^\w+\.[a-z]+$/.test(name);
+    const [creator, setCreator] = useState("");
+    const isValidCreator = /^[A-Za-z\s.]+$/.test(creator);
+    const [size, setSize] = useState("");
+    const isValidSize = !isNaN(parseInt(size));
+    const [date, setDate] = useState("");
+    const isValidDate = !isNaN(new Date(date).getTime());
     const dispatch = useDispatch();
     const createHandler = () => {
+        const type = isFile ? 'file' : 'folder';
+        if (((isFile && files[name]) || folders[name]) && !window.confirm(`'${name}' ${type} already exists. Do you want to replace it?`))
+            return;
         dispatch(add({
-            type: isFile ? 'file' : 'folder',
+            type,
             name,
             creator,
             size,
@@ -32,19 +41,19 @@ export default function Create() {
                 <button className={"radio-btn " + (isFile ? "inactive" : "")} onClick={() => setIsFile(false)}>Folder</button>
             </div>
             <div className="fields">
-                <input type="text" placeholder="Name" onChange={e => setName(e.target.value)} value={name}></input>
+                <input type="text" className={isValidName ? "" : "invalid"} placeholder="Name" onChange={e => setName(e.target.value)} value={name}></input>
             </div>
             <div className="fields">
-                <input type="text" placeholder="Creator" onChange={e => setCreator(e.target.value)} value={creator}></input>
+                <input type="text" className={isValidCreator ? "" : "invalid"} placeholder="Creator" onChange={e => setCreator(e.target.value)} value={creator}></input>
             </div>
             <div className="fields">
-                <input type="text" placeholder="Size" onChange={e => setSize(e.target.value)} value={size}></input>
+                <input type="text" className={isValidSize ? "" : "invalid"} placeholder="Size" onChange={e => setSize(e.target.value)} value={size}></input>
             </div>
             <div className="fields">
-                <input type="text" placeholder="Date" onChange={e => setDate(e.target.value)} value={date}></input>
+                <input type="text" className={isValidDate ? "" : "invalid"} placeholder="Date" onChange={e => setDate(e.target.value)} value={date}></input>
             </div>
             <div className="action">
-                <button onClick={createHandler}>Create</button>
+                <button onClick={createHandler} disabled={!isValidName || !isValidCreator || !isValidSize || !isValidDate}>Create</button>
             </div>
         </div>
     );

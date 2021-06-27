@@ -110,10 +110,14 @@ function Folder({ info, contextMenuHandler }) {
 
 function ListItemTemplate({ type, logo, info, contextMenuHandler }) {
     const { name } = info;
+    const extension = type === "file" && name.match(/(?<=\.)[a-z]+$/)[0];
     return (
         <div className={`item-template ${type}`} onContextMenu={e => contextMenuHandler.call(null, e, { type, ...info })}>
             <div className="icon">
                 <img src={logo} alt={name}></img>
+                {
+                    extension && <div className="extension">.{extension}</div>
+                }
             </div>
             <div className="title">
                 {name}

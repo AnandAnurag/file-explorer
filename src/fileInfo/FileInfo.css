@@ -18,4 +18,12 @@
 .info-wrapper>.icon {
     justify-self: center;
     grid-column: 1/3;
+    position: relative;
+}
+
+.info-wrapper>.extension {
+    position: absolute;
+    bottom: 1em;
+    left: 0.5em;
+    color: white;
 }

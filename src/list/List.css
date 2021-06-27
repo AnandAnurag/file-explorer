@@ -32,6 +32,17 @@ img {
     object-fit: contain;
 }
 
+.icon {
+    position: relative;
+}
+
+.extension {
+    position: absolute;
+    bottom: 1em;
+    left: 0.5em;
+    color: white;
+}
+
 .context-menu {
     position: absolute;
     background: #FFFFFF;
