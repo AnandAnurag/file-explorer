@@ -47,7 +47,7 @@
 
 .res-item-template {
     display: grid;
-    grid-template-columns: 10% 90%;
+    grid-template-columns: 29px auto;
     grid-gap: 0.25em;
     align-items: center;
     justify-items: center;
