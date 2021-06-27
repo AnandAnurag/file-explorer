@@ -1,0 +1,37 @@
+.radio-btn {
+    border: 1px solid #4AB7FF;
+    height: 32px;
+}
+
+.radio-btn:first-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    width: 63px
+}
+
+.radio-btn:last-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    width: 65px
+}
+
+.radio-btn.inactive {
+    background: #FFFFFF;
+    color: #535B62;
+    border: 1px solid #DDE0E4;
+}
+
+.create {
+    display: grid;
+    grid-gap: 1em;
+}
+
+.create>* {
+    align-self: center;
+    justify-self: center;
+}
+
+.create>.fields>input, .create>.action>button {
+    height: 40px;
+    width: 220px;
+}
