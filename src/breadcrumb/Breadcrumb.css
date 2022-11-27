@@ -35,4 +35,5 @@
 
 .breadcrumb>.crumb-level:not(:last-child) {
     color: #81878C;
+    cursor: pointer;
 }

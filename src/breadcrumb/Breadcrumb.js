@@ -8,23 +8,34 @@ export default function Breadcrumb() {
     const levels = useSelector(getLevels);
     const crumbLinks = [];
     const dispatch = useDispatch();
+    const parents = [];
     for (let [i, level] of Object.entries(levels)) {
-        crumbLinks.push(<div key={`level-${i}`} className="crumb-level">{level}</div>);
-        if (Number(i) < (levels.length - 1))
+        if (Number(i) < (levels.length - 1)) {
+            crumbLinks.push(<div
+                key={`level-${i}`}
+                className="crumb-level"
+                onClick={e => {
+                    e.preventDefault();
+                    dispatch(goto({
+                        location: '/' + levels.slice(1, Number(i) + 1).join('/')
+                    }));
+                }}>{level}</div>);
             crumbLinks.push(<div key={`seperator-${i}`} className="crumb-level-seperator">/</div>);
+        } else {
+            crumbLinks.push(<div key={`level-${i}`} className="crumb-level">{level}</div>);
+        }
+        if (Number(i)) parents.push(level);
     }
     return (
         <div className="breadcrumb">
-            <div className="image-wrapper">
+            {location !== '/' && <div className="image-wrapper">
                 <img src={arrowImage} alt="Back" onClick={() => {
-                    if (location !== '/') {
-                        const back = location.split('/').slice(0, levels.length - 1).join('/');
+                        const back = '/' + location.split('/').slice(1, levels.length - 1).join('/');
                         dispatch(goto({
                             location: back
                         }));
-                    }
                 }} />
-            </div>
+            </div>}
             {crumbLinks}
         </div>
     );

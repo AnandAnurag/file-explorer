@@ -20,6 +20,32 @@ export function List() {
     const [pos, setPos] = useState({ left: 0, top: 0 });
     const [showMenu, setShowMenu] = useState(false);
     const [payload, setPayload] = useState({ location, name: null, type: null });
+    const [selected, setSelected] = useState(null);
+
+    useEffect(() => {
+      setSelected(null);
+    }, [location]);
+
+    const updateSelected = (e) => {
+      e.preventDefault();
+      if (!e.target.closest('.list-item.selected')) {
+        setSelected(null);
+      }
+    };
+    const handleClick = (e, metaData) => {
+      e.preventDefault();
+      setPayload(Object.assign({ ...payload }, metaData));
+      switch (e.detail) {
+        case 1: // single click
+          setSelected((({location, type, name})=>({location, type, name}))(metaData));
+          break;
+        case 2: // double click
+          actionHandler("navigate");
+          break;
+        default:
+          break;
+      }
+    };
     const handleContextMenu = (e, metaData) => {
         e.preventDefault();
         const { top, left, height, width } = e.target.getBoundingClientRect();
@@ -54,24 +80,26 @@ export function List() {
         if (showMenu) {
             document.addEventListener("click", closeContextMenu);
             document.addEventListener("contextMenu", closeContextMenu);
+            document.addEventListener("click", updateSelected);
         } else {
             document.removeEventListener("click", closeContextMenu);
             document.removeEventListener("contextMenu", closeContextMenu);
+            document.addEventListener("click", updateSelected);
         }
     }, [showMenu, closeContextMenu])
     return (
         <div className="list">
             {
                 Object.values(folders).map((folder, i) => (
-                    <div key={`folder-${i}`} className="list-item">
-                        <Folder contextMenuHandler={handleContextMenu} info={folder}></Folder>
+                    <div key={`folder-${i}`} className={`list-item ${selected?.type === 'folder' && selected?.location === folder.location && selected?.name === folder.name ? 'selected' : ''}`}>
+                        <Folder clickHandler={handleClick} contextMenuHandler={handleContextMenu} info={folder} type="folder"></Folder>
                     </div>
                 ))
             }
             {
                 Object.values(files).map((file, i) => (
-                    <div key={`file-${i}`} className="list-item">
-                        <File contextMenuHandler={handleContextMenu} info={file}></File>
+                    <div key={`file-${i}`} className={`list-item ${selected?.type === 'file' && selected?.location === file.location && selected?.name === file.name ? 'selected' : ''}`}>
+                        <File clickHandler={handleClick} contextMenuHandler={handleContextMenu} info={file} type="file"></File>
                     </div>
                 ))
             }
@@ -99,20 +127,21 @@ export function detailHandler(metaData) {
         </Modal>
         , document.getElementById('modal-root'));
 }
-function File({ info, contextMenuHandler }) {
+function File({ type, info, clickHandler, contextMenuHandler }) {
     return (
-        <ListItemTemplate type="file" info={info} logo={fileImage} contextMenuHandler={contextMenuHandler} />
+        <ListItemTemplate type={type} info={info} logo={fileImage} clickHandler={clickHandler} contextMenuHandler={contextMenuHandler} />
     );
 }
-function Folder({ info, contextMenuHandler }) {
-    return <ListItemTemplate type="folder" info={info} logo={folderImage} contextMenuHandler={contextMenuHandler} />;
+function Folder({ type, info, clickHandler, contextMenuHandler }) {
+    return <ListItemTemplate type={type} info={info} logo={folderImage} clickHandler={clickHandler} contextMenuHandler={contextMenuHandler} />;
 }
 
-function ListItemTemplate({ type, logo, info, contextMenuHandler }) {
+function ListItemTemplate({ type, logo, info, clickHandler, contextMenuHandler }) {
     const { name } = info;
     const extension = type === "file" && name.match(/(?<=\.)[a-z]+$/)[0];
+    const metaData = { type, ...info };
     return (
-        <div className={`item-template ${type}`} onContextMenu={e => contextMenuHandler.call(null, e, { type, ...info })}>
+        <div className={`item-template ${type}`} onClick={e => clickHandler.call(null, e, metaData)} onContextMenu={e => contextMenuHandler.call(null, e, metaData)}>
             <div className="icon">
                 <img src={logo} alt={name}></img>
                 {
